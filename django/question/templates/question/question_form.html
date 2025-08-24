@@ -1,0 +1,16 @@
+<!-- question/templates/question/question_form.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Question</title>
+</head>
+<body>
+    <h1>Create Question</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+</body>
+</html>

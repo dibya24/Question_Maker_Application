@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Questions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007BFF;
+            margin-right: 10px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f9f9f9;
+        }
+
+        .actions a {
+            margin-right: 5px;
+        }
+
+        .no-data {
+            margin-top: 15px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <h1>Questions</h1>
+
+    <!-- Create new question -->
+    <a href="{% url 'question_create' %}">Create New Question</a>
+
+    {% if questions %}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Subject</th>
+                    <th>Grade</th>
+                    <th>Status</th>
+                    <th>Question Text</th>
+                    <th>Options</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for question in questions %}
+                    <tr>
+                        <td>{{ question.id }}</td>
+                        <td>{{ question.subject.name }}</td>
+                        <td>{{ question.grade }}</td>
+                        <td>{{ question.status }}</td>
+                        <td>{{ question.text|truncatechars:50 }}</td>
+                        <td>
+                            <!-- Manage options for this question -->
+                            <a href="{% url 'option_list' question.id %}">Manage Options</a>
+                        </td>
+                        <td class="actions">
+                            <!-- Edit and Delete links -->
+                            <a href="{% url 'question_edit' question.id %}">Edit</a>
+                            <a href="{% url 'question_delete' question.id %}">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="no-data">No questions found.</p>
+    {% endif %}
+</body>
+</html>
