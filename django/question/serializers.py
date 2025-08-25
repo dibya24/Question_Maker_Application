@@ -1,16 +1,17 @@
 from rest_framework import serializers
-from .models import Question, Option
+from .models import Question, Option, Subject
 
 class OptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Option
-        fields = '__all__'
+        fields = ['id', 'text', 'is_correct']
 
+# question/serializers.py
 class QuestionSerializer(serializers.ModelSerializer):
     options = OptionSerializer(many=True, read_only=True)
-    subject = serializers.PrimaryKeyRelatedField(queryset=Subject.objects.all())
-    grade = serializers.IntegerField()
-    
+    subject = serializers.StringRelatedField()
+    grade = serializers.CharField(source='get_grade_display')
+
     class Meta:
         model = Question
-        fields = '__all__'
+        fields = ['id', 'subject', 'grade', 'text', 'diagram', 'status', 'options', 'created_at']
