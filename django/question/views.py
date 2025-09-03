@@ -1,14 +1,18 @@
 # backend/question/views.py
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Question, Option
-from .serializers import QuestionSerializer, OptionSerializer  # Create these serializers
+from .serializers import QuestionSerializer, OptionSerializer
+from rest_framework.permissions import IsAuthenticated
+
+  # Create these serializers
 
 # ----------------- Question CRUD -----------------
 
 # List and Create Questions
 @api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
 def question_list_create(request):
     if request.method == 'GET':
         questions = Question.objects.all()
@@ -24,6 +28,7 @@ def question_list_create(request):
 
 # Retrieve, Update, Delete a Question
 @api_view(['GET', 'PUT', 'DELETE'])
+
 def question_detail(request, id):
     try:
         question = Question.objects.get(id=id)

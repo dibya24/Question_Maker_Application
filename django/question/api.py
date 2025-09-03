@@ -1,7 +1,10 @@
 # question/api.py
 from rest_framework import viewsets, serializers
+from rest_framework.permissions import AllowAny
 from .models import Question, Option, Subject
+from .serializers import QuestionSerializer
 
+# ----------------- SERIALIZERS ------------------
 
 class OptionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -65,8 +68,12 @@ class QuestionWriteSerializer(serializers.ModelSerializer):
         return instance
 
 
+# ----------------- VIEWSET ------------------
+
 class QuestionViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.all().order_by("-created_at")
+    serializer_class = QuestionSerializer
+    permission_classes = [AllowAny]   # temporarily open (later switch to JWT)
 
     def get_serializer_class(self):
         if self.action in ["list", "retrieve"]:
